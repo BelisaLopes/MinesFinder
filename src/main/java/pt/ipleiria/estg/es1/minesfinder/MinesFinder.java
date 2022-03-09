@@ -5,6 +5,10 @@ import javax.swing.*;
 public class MinesFinder extends JFrame {
 
     private JPanel painelPrincipal;
+    private JButton jogoFácilButton;
+    private JButton jogoMédioButton;
+    private JButton jogoDifícilButton;
+    private JButton sairButton;
 
     public MinesFinder(String title) {
         super(title);
