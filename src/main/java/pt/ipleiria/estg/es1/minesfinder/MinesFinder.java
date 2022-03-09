@@ -10,6 +10,7 @@ public class MinesFinder extends JFrame {
         super(title);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(painelPrincipal);
+        pack();
     }
     public static void main(String[] args) {
         new MinesFinder("Mines Finder").setVisible(true);
