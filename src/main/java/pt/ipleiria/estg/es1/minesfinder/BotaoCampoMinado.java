@@ -6,6 +6,7 @@ import java.awt.*;
 public class BotaoCampoMinado extends JButton {
     private int estado; //atributo
 
+
     //construtor
     public BotaoCampoMinado() {
         this.estado = CampoMinado.TAPADO;

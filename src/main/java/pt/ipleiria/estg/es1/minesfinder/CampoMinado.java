@@ -97,7 +97,8 @@ public class CampoMinado {
             System.out.println("Perdeu o jogo");
         }
         if(hasMina(x,y) == false){
-            estado[x][y] = CampoMinado.VAZIO;
+            revelarQuadriculasVizinhas(x,y);
+            //estado[x][y] = CampoMinado.VAZIO;
         }else{
             contarMinasVizinhas(x,y);
         }
@@ -115,4 +116,29 @@ public class CampoMinado {
         return numMinasVizinhas;
     }
 
+    private void revelarQuadriculasVizinhas(int x, int y){
+        var numMinasVizinhas = 0;
+        for (var i = Math.max(0, x - 1); i < Math.min(largura, x + 2); ++i) {
+            for (var j = Math.max(0, y - 1); j < Math.min(altura, y + 2); ++j) {
+                estado[x][y] = CampoMinado.VAZIO;
+            }
+        }
+    }
+
+    private boolean isVitoria() {
+        for (int i = 0; i < largura; ++i) {
+            for (var j = 0 ; j < altura; ++j) {
+                if (!minas[i][j] && estado[i][j] >= TAPADO) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void marcarComoTendoMina(int x, int y){
+        if(estado[x][y] == TAPADO || estado[x][y] == DUVIDA){
+            estado[x][y] = CampoMinado.MARCADO;
+        }
+    }
 }

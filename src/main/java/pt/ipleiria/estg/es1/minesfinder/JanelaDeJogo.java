@@ -21,8 +21,8 @@ public class JanelaDeJogo extends JFrame{
         // Criar e adicionar os botões à janela
         for (int linha = 0; linha < altura; ++linha) {
             for (int coluna = 0; coluna < largura; ++coluna) {
-                botoes[linha][coluna] = new BotaoCampoMinado();
-                painelJogo.add(botoes[linha][coluna]);
+                botoes[coluna][linha] = new BotaoCampoMinado();
+                painelJogo.add(botoes[coluna][linha]);
             }
         }
         setContentPane(painelJogo);
