@@ -90,12 +90,29 @@ public class CampoMinado {
             primeiraJogada = false;
             colocarMinas(x, y);
         }
-        //TODO
-        if(minas[x][y]){
-            estado[x][y] = REBENTADO;
+
+        if(hasMina(x,y)){
+            estado[x][y] = CampoMinado.REBENTADO;
             jogoTerminado = true;
             System.out.println("Perdeu o jogo");
         }
+        if(hasMina(x,y) == false){
+            estado[x][y] = CampoMinado.VAZIO;
+        }else{
+            contarMinasVizinhas(x,y);
+        }
+    }
+
+    private int contarMinasVizinhas(int x, int y) {
+        var numMinasVizinhas = 0;
+        for (var i = Math.max(0, x - 1); i < Math.min(largura, x + 2); ++i) {
+            for (var j = Math.max(0, y - 1); j < Math.min(altura, y + 2); ++j) {
+                if (minas[i][j]) {
+                    ++numMinasVizinhas;
+                }
+            }
+        }
+        return numMinasVizinhas;
     }
 
 }
