@@ -6,10 +6,24 @@ import java.awt.*;
 public class BotaoCampoMinado extends JButton {
     private int estado; //atributo
 
+    //pag26
+    private int linha;
+    private int coluna;
 
     //construtor
-    public BotaoCampoMinado() {
+    public BotaoCampoMinado(int linha, int coluna) {
         this.estado = CampoMinado.TAPADO;
+
+        this.linha = linha;
+        this.coluna = coluna;
+    }
+
+    public int getLinha() {
+        return linha;
+    }
+
+    public int getColuna() {
+        return coluna;
     }
 
     public void setEstado(int estado) {
