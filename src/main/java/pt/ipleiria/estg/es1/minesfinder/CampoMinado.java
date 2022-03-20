@@ -3,8 +3,7 @@ package pt.ipleiria.estg.es1.minesfinder;
 import java.util.Random;
 
 public class CampoMinado {
-    //posição se tem mina ou não
-    private boolean[][] minas;
+
     //constantes
     public static final int VAZIO = 0;
     /* de 1 a 8 são o número de minas à volta */
@@ -13,17 +12,19 @@ public class CampoMinado {
     public static final int MARCADO = 11;
     public static final int REBENTADO = 12;
 
-    public boolean primeiraJogada;
-    public boolean jogoTerminado;
-    public boolean jogadorDerrotado;
-
     //estado da quadricula
     private int[][] estado;
+    //posição se tem mina ou não
+    private boolean[][] minas;
 
     //largura, altura e número de minas no campo de minas
     private int largura;
     private int altura;
     private int numMinas;
+
+    public boolean primeiraJogada;
+    public boolean jogoTerminado;
+    public boolean jogadorDerrotado;
 
     //contar o tempo de jogo e inicio do jogo
     private long instanteInicioJogo;
@@ -88,6 +89,12 @@ public class CampoMinado {
     }
 
     public void revelarQuadricula(int x, int y) {
+        if (isVitoria()) {
+            jogoTerminado=true;
+            jogadorDerrotado=false;
+            duracaoJogo=System.currentTimeMillis()-instanteInicioJogo;
+        }
+
         if (jogoTerminado || estado[x][y] < TAPADO) {
             return;
         }
@@ -104,17 +111,12 @@ public class CampoMinado {
             jogadorDerrotado=true;
             System.out.println("Perdeu o jogo");
             duracaoJogo=System.currentTimeMillis()-instanteInicioJogo;
-        }else{
-            if (isVitoria()) {
-                jogoTerminado=true;
-                jogadorDerrotado=false;
-                duracaoJogo=System.currentTimeMillis()-instanteInicioJogo;
-            }
+            return;
         }
 
         if(hasMina(x,y) == false){
+            estado[x][y] = CampoMinado.VAZIO;
             revelarQuadriculasVizinhas(x,y);
-            //estado[x][y] = CampoMinado.VAZIO;
         }else{
             contarMinasVizinhas(x,y);
         }
@@ -140,7 +142,7 @@ public class CampoMinado {
         }
     }
 
-    private boolean isVitoria() {
+    protected boolean isVitoria() {
         for (int i = 0; i < largura; ++i) {
             for (var j = 0 ; j < altura; ++j) {
                 if (!minas[i][j] && estado[i][j] >= TAPADO) {

@@ -2,9 +2,7 @@ package pt.ipleiria.estg.es1.minesfinder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class JanelaDeJogo extends JFrame{
     private JPanel painelJogo;
@@ -27,9 +25,11 @@ public class JanelaDeJogo extends JFrame{
                 botoes[coluna][linha] = new BotaoCampoMinado(linha, coluna);
                 //pag 25
                 botoes[coluna][linha].addActionListener(this::btnCampoMinadoActionPerformed);
-
-                botoes[coluna][linha].addMouseListener(mouseListener);
                 //
+                botoes[coluna][linha].addMouseListener(mouseListener);
+
+                botoes[coluna][linha].addKeyListener(keyListener);
+
                 painelJogo.add(botoes[coluna][linha]);
 
             }
@@ -101,6 +101,42 @@ public class JanelaDeJogo extends JFrame{
         }
         @Override
         public void mouseExited(MouseEvent e) {
+
+        }
+    };
+
+    KeyListener keyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+        @Override
+        public void keyPressed(KeyEvent e) {
+            var botao = (BotaoCampoMinado) e.getSource();
+
+            var linha = botao.getLinha();
+            var coluna = botao.getColuna();
+
+            var largura = campoMinado.getLargura();
+            var altura = campoMinado.getAltura();
+
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_UP -> botoes[coluna][--linha < 0 ? largura - 1 : linha].requestFocus();
+                case KeyEvent.VK_DOWN -> botoes[coluna][(linha + 1) % largura].requestFocus();
+                case KeyEvent.VK_LEFT -> botoes[--coluna < 0 ? altura - 1 : coluna][linha].requestFocus();
+                case KeyEvent.VK_RIGHT -> botoes[(coluna + 1) % altura][linha].requestFocus();
+                case KeyEvent.VK_M -> {
+                    switch (campoMinado.getEstadoQuadricula(coluna, linha)) {
+                        case CampoMinado.TAPADO -> campoMinado.marcarComoTendoMina(coluna, linha);
+                        case CampoMinado.MARCADO -> campoMinado.marcarComoSuspeita(coluna, linha);
+                        case CampoMinado.DUVIDA -> campoMinado.desmarcarQuadricula(coluna, linha);
+                    }
+                    actualizarEstadoBotoes();
+                }
+            }
+        }
+        @Override
+        public void keyReleased(KeyEvent e) {
 
         }
     };
